@@ -32,6 +32,13 @@ class HomeController {
     @ResponseBody JSONObject autoInsert(@RequestParam("label_excel") MultipartFile labelExcelFile,
                                     @RequestParam("txt_files") List<MultipartFile> textFiles) {
 
+        textFiles.sort(new Comparator<MultipartFile>() {
+            @Override
+            int compare(MultipartFile o1, MultipartFile o2) {
+                return o1.getName().compareTo(o2.getName())
+            }
+        })
+
         println("process Excel File:${labelExcelFile.getName()}")
         Workbook workbook=WorkbookFactory.create(labelExcelFile.getInputStream())
         Sheet sheet=workbook.getSheetAt(0)

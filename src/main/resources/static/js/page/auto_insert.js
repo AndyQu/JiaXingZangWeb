@@ -19,7 +19,7 @@ function doAutoInsert() {
     $.ajax({
         type: "POST",
         url: "/autoInsert",  //同目录下的php文件
-
+        timeout:0,
         data:formData,
         dataType:"json", //声明成功使用json数据类型回调
 
@@ -30,6 +30,7 @@ function doAutoInsert() {
 
         success: function(response){  //请求成功后的回调函数
 
+            alert("转换完成~~~");
             $("#result_text").val(response.data);
             var link = document.getElementById("a_download");
             link.href = 'data:text/plain;charset=UTF-8,' + encodeURIComponent(response.data);
@@ -39,6 +40,10 @@ function doAutoInsert() {
 
 //now put the link somewhere in the html document:
 //             document.body.appendChild(link);
+        },
+        error: function (response) {
+            alert("转换失败!!!");
+            console.log(JSON.stringify(response))
         }
     });
 
