@@ -38,6 +38,8 @@ class HomeController {
                 return o1.getName().compareTo(o2.getName())
             }
         })
+        new File(OutputFolderPath).mkdirs()
+        new File(LabelDataFolderPath).mkdirs()
 
         println("process Excel File:${labelExcelFile.getName()}")
         Workbook workbook=WorkbookFactory.create(labelExcelFile.getInputStream())
