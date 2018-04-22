@@ -9,6 +9,7 @@ import org.lq.aiitc.jxzang.AutoInsertPhotoNameIntoText
 import org.lq.aiitc.jxzang.LabelRow
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.multipart.MultipartFile
@@ -27,8 +28,8 @@ class HomeController {
         return mv
     }
     @RequestMapping("/autoInsert")
-    @ResponseBody String autoInsert(@RequestPart("label_excel") MultipartFile labelExcelFile,
-                                                         @RequestPart("txt_files") MultipartFile[] textFiles) {
+    @ResponseBody JSONObject autoInsert(@RequestParam("label_excel") MultipartFile labelExcelFile,
+                                    @RequestParam("txt_files") List<MultipartFile> textFiles) {
 
         println("process Excel File:${labelExcelFile.getName()}")
         Workbook workbook=WorkbookFactory.create(labelExcelFile.getInputStream())
@@ -45,16 +46,18 @@ class HomeController {
         List<LabelRow> labelRowLst=AutoInsertPhotoNameIntoText.complementLabelData(photoNameLst,sheet)
         AutoInsertPhotoNameIntoText.storeLabelData(labelRowLst,new File(LabelDataFolderPath,"${sheet.getSheetName()}_完整标注结果.csv"))
 //        List<String> textFilePaths=findBookTextsBy(bookSNum,TextRootFolderPath)
-        return autoInsert(labelRowLst, textFiles,OutputFolderPath)
-
+        String result=autoInsert(labelRowLst, textFiles,OutputFolderPath)
+        JSONObject ret=new JSONObject()
+        ret.put("data",result)
+        return ret
     }
 
-    static String autoInsert(List<LabelRow> labelRows, MultipartFile[] textFiles, String OutputFolderPath) {
+    static String autoInsert(List<LabelRow> labelRows, List<MultipartFile> textFiles, String OutputFolderPath) {
         StringBuffer sb=new StringBuffer()
         int textRowNum=0
         int labelRowIndex=0
         int nextTargetRowNum=0
-        for(int i=0;i<textFiles.length;i++){
+        for(int i=0;i<textFiles.size();i++){
             MultipartFile srcFile=textFiles[i]
             File targetFile=new File(OutputFolderPath,srcFile.getName())
             targetFile.createNewFile()
