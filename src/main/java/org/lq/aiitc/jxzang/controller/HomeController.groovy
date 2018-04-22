@@ -84,13 +84,13 @@ class HomeController {
                         }
                         if(nextTargetRowNum==textRowNum){
                             while (labelRowIndex<labelRows.size() && labelRows.get(labelRowIndex).rowCount<=0){
-                                writer << "${labelRows.get(labelRowIndex).photoName} ${labelRows.get(labelRowIndex).rowCount}\n"
-                                sb.append("${labelRows.get(labelRowIndex).photoName} ${labelRows.get(labelRowIndex).rowCount}\n")
+                                writer << "${labelRows.get(labelRowIndex).photoName} ${labelRows.get(labelRowIndex).rowCount} ${labelRows.get(labelRowIndex).remarks}\n"
+                                sb.append("${labelRows.get(labelRowIndex).photoName} ${labelRows.get(labelRowIndex).rowCount} ${labelRows.get(labelRowIndex).remarks}\n")
                                 labelRowIndex++
                             }
                             if(labelRowIndex<labelRows.size()) {
-                                writer << "${labelRows.get(labelRowIndex).photoName} ${labelRows.get(labelRowIndex).rowCount}\n"
-                                sb.append("${labelRows.get(labelRowIndex).photoName} ${labelRows.get(labelRowIndex).rowCount}\n")
+                                writer << "${labelRows.get(labelRowIndex).photoName} ${labelRows.get(labelRowIndex).rowCount} ${labelRows.get(labelRowIndex).remarks}\n"
+                                sb.append("${labelRows.get(labelRowIndex).photoName} ${labelRows.get(labelRowIndex).rowCount} ${labelRows.get(labelRowIndex).remarks}\n")
                                 nextTargetRowNum+=labelRows.get(labelRowIndex).rowCount
                                 labelRowIndex++
                             }
