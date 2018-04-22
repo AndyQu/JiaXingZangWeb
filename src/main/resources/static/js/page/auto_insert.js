@@ -30,8 +30,15 @@ function doAutoInsert() {
 
         success: function(response){  //请求成功后的回调函数
 
-            $("#result_text").val(response.data)
+            $("#result_text").val(response.data);
+            var link = document.getElementById("a_download");
+            link.href = 'data:text/plain;charset=UTF-8,' + encodeURIComponent(response.data);
+            link.innerHtml = '点击下载';
+//set default action on link to force download, and set default filename:
+            link.download = $("#label_excel")[0].files[0].name.replace(".xls","").replace(".xlsx","")+"_inserted.txt";
 
+//now put the link somewhere in the html document:
+//             document.body.appendChild(link);
         }
     });
 

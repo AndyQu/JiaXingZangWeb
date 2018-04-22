@@ -10,17 +10,18 @@ import org.lq.aiitc.jxzang.LabelRow
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.servlet.ModelAndView
 
 @Controller
 class HomeController {
-    static final String PhotoRootFolderPath="E:\\嘉兴藏图文整理\\photos"
-
-    static final String OutputFolderPath="E:\\嘉兴藏图文整理\\output"
-    static final String LabelDataFolderPath="E:\\嘉兴藏图文整理\\output-label"
+//    static final String PhotoRootFolderPath="E:\\嘉兴藏图文整理\\photos"
+//    static final String OutputFolderPath="E:\\嘉兴藏图文整理\\output"
+//    static final String LabelDataFolderPath="E:\\嘉兴藏图文整理\\output-label"
+    static final String PhotoRootFolderPath="/home/xian/jxzang/photos"
+    static final String OutputFolderPath="/home/xian/jxzang/output"
+    static final String LabelDataFolderPath="/home/xian/jxzang/output-label"
 
     @RequestMapping("/")
     ModelAndView hello(ModelAndView mv) {
