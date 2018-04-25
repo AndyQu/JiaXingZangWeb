@@ -64,9 +64,9 @@ class HomeController {
 
     static String autoInsert(List<LabelRow> labelRows, List<MultipartFile> textFiles, String OutputFolderPath) {
         StringBuffer sb=new StringBuffer()
-        int textRowNum=0
+        int textRowNum=1
         int labelRowIndex=0
-        int nextTargetRowNum=0
+        int nextTargetRowNum=1
         for(int i=0;i<textFiles.size();i++){
             MultipartFile srcFile=textFiles[i]
             File targetFile=new File(OutputFolderPath,srcFile.getName())
@@ -77,7 +77,7 @@ class HomeController {
                     Scanner scanner=new Scanner(srcFile.getInputStream())
                     while (scanner.hasNextLine()){
                         String line=scanner.nextLine()
-                        if(StringUtils.isBlank(line)){
+                        if(StringUtils.isBlank(line)|| line.contains('\ufeff')){
                             sb.append("${line}\n")
                             writer<<"${line}\n"
                             continue
