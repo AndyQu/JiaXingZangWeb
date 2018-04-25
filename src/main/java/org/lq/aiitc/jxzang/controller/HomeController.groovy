@@ -76,8 +76,8 @@ class HomeController {
                     writer.write("")
                     Scanner scanner=new Scanner(srcFile.getInputStream())
                     while (scanner.hasNextLine()){
-                        String line=scanner.nextLine()
-                        if(StringUtils.isBlank(line)|| line.contains('\ufeff')){
+                        String line=scanner.nextLine().replaceAll('\ufeff﻿',"").trim()
+                        if(StringUtils.isBlank(line)){
                             sb.append("${line}\n")
                             writer<<"${line}\n"
                             continue
