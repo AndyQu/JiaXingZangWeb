@@ -76,7 +76,10 @@ class HomeController {
                     writer.write("")
                     Scanner scanner=new Scanner(srcFile.getInputStream())
                     while (scanner.hasNextLine()){
-                        String line=scanner.nextLine().replaceAll('\ufeff﻿',"").trim()
+                        String lineA=scanner.nextLine()
+                        String lineB=rmBomChar(lineA)
+//                        String lingB=lineA.replaceAll("\ufeff﻿","")
+                        String line=lineB.trim()
                         if(StringUtils.isBlank(line)){
                             sb.append("${line}\n")
                             writer<<"${line}\n"
@@ -99,6 +102,16 @@ class HomeController {
                         sb.append("${line}\n")
                         textRowNum++
                     }
+            }
+        }
+        return sb.toString()
+    }
+
+    static String rmBomChar(String s) {
+        StringBuffer sb=new StringBuffer()
+        for(int i=0;i<s.length();i++){
+            if(s.charAt(i)!=(char)'\ufeff'){
+                sb.append(s.charAt(i))
             }
         }
         return sb.toString()
