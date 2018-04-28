@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>AIITC</groupId>
-    <artifactId>JiaXingZangWeb</artifactId>
+    <artifactId>DZJWeb</artifactId>
     <version>1.0-SNAPSHOT</version>
     <parent>
         <groupId>org.springframework.boot</groupId>
