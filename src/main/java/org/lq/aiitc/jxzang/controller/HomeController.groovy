@@ -23,7 +23,7 @@ class HomeController {
     static final String OutputFolderPath="/home/xian/jxzang/output"
     static final String LabelDataFolderPath="/home/xian/jxzang/output-label"
 
-    @RequestMapping("/")
+    @RequestMapping("/jxz-home")
     ModelAndView hello(ModelAndView mv) {
         mv.setViewName("home")
         return mv

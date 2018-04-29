@@ -1,5 +1,6 @@
 package org.lq.aiitc.qlzang.controller
 
+import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.ss.usermodel.WorkbookFactory
@@ -20,17 +21,17 @@ class LabelExcelGeneratorController {
         "十一","十二","十三","十四","十五","十六","十七","十八","十九","二十",
     ]
 
-    @GetMapping("/page/gen-excel")
+    @GetMapping("/")
     ModelAndView pGenExcel(){
         return  new ModelAndView("gen_excel")
     }
     @PostMapping("/rest/gen-excel")
     void genExcel(HttpServletResponse response,@RequestParam String bookName,@RequestParam String volumnNum,
                   @RequestParam String labelor,@RequestParam String startChar, @RequestParam String endChar){
-        Workbook destWorkbook=autoGen(bookName,volumnName,labelor,startChar,endChar)
+        Workbook destWorkbook=autoGen(bookName,volumnNum,labelor,startChar,endChar)
         response.reset()
         response.setContentType("application/vnd.ms-excel;charset=utf-8")
-        String fName="${bookName}_${volumnNum}_标注结果_${labelor}.xlsx"
+        String fName=URLEncoder.encode("${bookName}_${volumnNum}_标注结果_${labelor}.xlsx","utf-8")
         response.setHeader("Content-Disposition", "attachment;filename=${fName}")
         destWorkbook.write(response.getOutputStream())
         response.getOutputStream().close()
@@ -53,13 +54,14 @@ class LabelExcelGeneratorController {
         InputStream ins=getClass().getResourceAsStream("/qlzang/qlzang_label_template.xlsx")
         Workbook destWorkbook = WorkbookFactory.create(ins)
         Sheet tSheet=destWorkbook.getSheetAt(0)
-        tSheet.createRow(0).createCell(0).setCellValue(volumnNum)
+        getRow(tSheet,1).createCell(0).setCellValue(volumnNum)
+
 
         int rIndex=1
         for(int i=QianZiWen.indexOf(startChar);i<=QianZiWen.indexOf(endChar);i++){
             for(int firstLevelIndex=1;firstLevelIndex<=10;firstLevelIndex++) {
                 for(int secLevelIndex=1;secLevelIndex<=20;secLevelIndex++) {
-                    tSheet.createRow(rIndex).createCell(4)
+                    getRow(tSheet,rIndex).createCell(4)
                             .setCellValue(
                             "${QianZiWen.charAt(i)}${ChineseNums[firstLevelIndex]} ${ChineseNums[secLevelIndex]}")
                     rIndex++
@@ -67,5 +69,12 @@ class LabelExcelGeneratorController {
             }
         }
         return destWorkbook
+    }
+
+    Row getRow(Sheet sheet, int rIndex) {
+        Row r=sheet.getRow(rIndex)
+        if(r==null)
+           r=sheet.createRow(rIndex)
+        return r
     }
 }
