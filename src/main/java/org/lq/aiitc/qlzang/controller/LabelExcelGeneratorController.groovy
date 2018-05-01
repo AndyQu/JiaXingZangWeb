@@ -29,7 +29,7 @@ class LabelExcelGeneratorController {
     @PostMapping("/rest/gen-excel")
     void genExcel(HttpServletResponse response,@RequestParam String bookName,@RequestParam String volumnNum,
                   @RequestParam String labelor,@RequestParam String startChar, @RequestParam String endChar,
-                  @RequestParam Boolean skip11121718){
+                  @RequestParam(defaultValue = "false") Boolean skip11121718){
         Workbook destWorkbook=autoGen(bookName,volumnNum,labelor,startChar,endChar,skip11121718)
         response.reset()
         response.setContentType("application/vnd.ms-excel;charset=utf-8")
