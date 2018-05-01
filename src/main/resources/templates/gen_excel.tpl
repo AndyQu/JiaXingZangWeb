@@ -47,8 +47,8 @@ layout 'layout.tpl',
                     }
                     div(class:"checkbox"){
                         label{
-                            input(type: "checkbox",name:"skip11121718"){}
-                            yieldUnescaped "跳过十一、十二、十七、十九"
+                            input(type: "checkbox",name:"skip5_6_11_12_17_18"){}
+                            yieldUnescaped "跳过编号：五、六、十一、十二、十七、十九"
                         }
                     }
                     button(type: "submit") {

@@ -29,8 +29,8 @@ class LabelExcelGeneratorController {
     @PostMapping("/rest/gen-excel")
     void genExcel(HttpServletResponse response,@RequestParam String bookName,@RequestParam String volumnNum,
                   @RequestParam String labelor,@RequestParam String startChar, @RequestParam String endChar,
-                  @RequestParam(defaultValue = "false") Boolean skip11121718){
-        Workbook destWorkbook=autoGen(bookName,volumnNum,labelor,startChar,endChar,skip11121718)
+                  @RequestParam(defaultValue = "false") Boolean skip5_6_11_12_17_18){
+        Workbook destWorkbook=autoGen(bookName,volumnNum,labelor,startChar,endChar,skip5_6_11_12_17_18)
         response.reset()
         response.setContentType("application/vnd.ms-excel;charset=utf-8")
         String fName=URLEncoder.encode("${bookName}_${volumnNum}_标注结果_${labelor}.xlsx","utf-8")
@@ -52,7 +52,7 @@ class LabelExcelGeneratorController {
     }
 
     Workbook  autoGen(String bookName,String volumnNum, String labelor, String startChar, String endChar,
-                      Boolean skip11121718=false){
+                      Boolean skip5_6_11_12_17_18=false){
         //读取目标模板文件
         InputStream ins=getClass().getResourceAsStream("/qlzang/qlzang_label_template.xlsx")
         Workbook destWorkbook = WorkbookFactory.create(ins)
@@ -64,8 +64,8 @@ class LabelExcelGeneratorController {
         for(int i=QianZiWen.indexOf(startChar);i<=QianZiWen.indexOf(endChar);i++){
             for(int firstLevelIndex=1;firstLevelIndex<=10;firstLevelIndex++) {
                 for(int secLevelIndex=1;secLevelIndex<=20;secLevelIndex++) {
-                    if(skip11121718){
-                        if([11,12,17,18].contains(secLevelIndex)){
+                    if(skip5_6_11_12_17_18){
+                        if([5,6,11,12,17,18].contains(secLevelIndex)){
                             continue
                         }
                     }
