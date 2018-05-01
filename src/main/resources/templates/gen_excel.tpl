@@ -45,6 +45,12 @@ layout 'layout.tpl',
                             yieldUnescaped """如：'玄十 十九'中的'玄'"""
                         }
                     }
+                    div(class:"checkbox"){
+                        label{
+                            input(type: "checkbox",name:"skip11121718"){}
+                            yieldUnescaped "跳过十一、十二、十七、十九"
+                        }
+                    }
                     button(type: "submit") {
                         span("生成Excel文件")
                     }

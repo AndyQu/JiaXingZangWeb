@@ -1,5 +1,6 @@
 package org.lq.aiitc.qlzang.controller
 
+import com.sun.org.apache.xpath.internal.operations.Bool
 import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.usermodel.Workbook
@@ -27,8 +28,9 @@ class LabelExcelGeneratorController {
     }
     @PostMapping("/rest/gen-excel")
     void genExcel(HttpServletResponse response,@RequestParam String bookName,@RequestParam String volumnNum,
-                  @RequestParam String labelor,@RequestParam String startChar, @RequestParam String endChar){
-        Workbook destWorkbook=autoGen(bookName,volumnNum,labelor,startChar,endChar)
+                  @RequestParam String labelor,@RequestParam String startChar, @RequestParam String endChar,
+                  @RequestParam Boolean skip11121718){
+        Workbook destWorkbook=autoGen(bookName,volumnNum,labelor,startChar,endChar,skip11121718)
         response.reset()
         response.setContentType("application/vnd.ms-excel;charset=utf-8")
         String fName=URLEncoder.encode("${bookName}_${volumnNum}_标注结果_${labelor}.xlsx","utf-8")
@@ -49,7 +51,8 @@ class LabelExcelGeneratorController {
         println(sb.toString())
     }
 
-    Workbook  autoGen(String bookName,String volumnNum, String labelor, String startChar, String endChar){
+    Workbook  autoGen(String bookName,String volumnNum, String labelor, String startChar, String endChar,
+                      Boolean skip11121718=false){
         //读取目标模板文件
         InputStream ins=getClass().getResourceAsStream("/qlzang/qlzang_label_template.xlsx")
         Workbook destWorkbook = WorkbookFactory.create(ins)
@@ -61,6 +64,11 @@ class LabelExcelGeneratorController {
         for(int i=QianZiWen.indexOf(startChar);i<=QianZiWen.indexOf(endChar);i++){
             for(int firstLevelIndex=1;firstLevelIndex<=10;firstLevelIndex++) {
                 for(int secLevelIndex=1;secLevelIndex<=20;secLevelIndex++) {
+                    if(skip11121718){
+                        if([11,12,17,18].contains(secLevelIndex)){
+                            continue
+                        }
+                    }
                     getRow(tSheet,rIndex).createCell(4)
                             .setCellValue(
                             "${QianZiWen.charAt(i)}${ChineseNums[firstLevelIndex]} ${ChineseNums[secLevelIndex]}")
