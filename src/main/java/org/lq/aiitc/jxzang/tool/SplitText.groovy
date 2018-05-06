@@ -12,9 +12,10 @@ import org.lq.aiitc.jxzang.controller.HomeController
 
 class SplitText {
     static final String ExcelFolder="E:\\嘉兴藏图文整理\\二次校对结果\\Excel表"
-    static final String TextFolder ="E:\\嘉兴藏图文整理\\二次校对结果\\切分文本"
+//    static final String TextFolder ="E:\\嘉兴藏图文整理\\二次校对结果\\切分文本"
+    static final String TextFolder ="E:\\嘉兴藏图文整理\\output_encode"
     static final String OutputFolder="E:\\嘉兴藏图文整理\\text-slices"
-    static final String TextCharset="GBK"
+    static final String TextCharset="utf-8"
     static void main(String[]args){
         doSplit(ExcelFolder,TextFolder,OutputFolder)
     }
@@ -24,10 +25,10 @@ class SplitText {
             it-> it.isFile() &&
                     (it.getName().endsWith(".xlsx")||it.getName().endsWith(".xls"))
         }
-        files=[
-                new File("E:\\嘉兴藏图文整理\\二次校对结果\\Excel表\\J33nB285.xlsx"),
-                new File("E:\\嘉兴藏图文整理\\二次校对结果\\Excel表\\J37nB391.xlsx")
-        ]
+//        files=[
+//                new File("E:\\嘉兴藏图文整理\\二次校对结果\\Excel表\\J33nB285.xlsx"),
+//                new File("E:\\嘉兴藏图文整理\\二次校对结果\\Excel表\\J37nB391.xlsx")
+//        ]
         files.each {
             labelExcelFile->
                 println("process Excel File:${labelExcelFile.getName()}")
