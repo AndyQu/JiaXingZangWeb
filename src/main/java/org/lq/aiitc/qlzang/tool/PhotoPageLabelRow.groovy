@@ -8,4 +8,8 @@ class PhotoPageLabelRow {
     int section
     int row
     String text
+
+    boolean isSameAs(PhotoPageLabelRow b) {
+        return page==b.page && section==b.section && row==b.row
+    }
 }

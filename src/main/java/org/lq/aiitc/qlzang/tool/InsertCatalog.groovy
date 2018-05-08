@@ -6,9 +6,12 @@ import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.ss.usermodel.WorkbookFactory
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.util.FileCopyUtils
 
 class InsertCatalog {
+    static final Logger LOGGER=LoggerFactory.getLogger(InsertCatalog.class)
     static final File OutputFolder=new File("E:\\永乐北藏___乾龙藏\\catalog_inserted_output")
     static void main(String[]args){
         OutputFolder.mkdirs()
@@ -17,11 +20,25 @@ class InsertCatalog {
                 textFilesPath: "E:\\永乐北藏___乾龙藏\\永乐北藏\\YB_txt",
                 labelExcelsPath: "E:\\永乐北藏___乾龙藏\\智能中心-永乐北藏-标注结果"
         )
-        [ybZang].each {
+        def qlZang=new ScriptureConfig(
+                prefix: "QL",
+                textFilesPath: "E:\\永乐北藏___乾龙藏\\乾隆藏\\QL_txt",
+                labelExcelsPath: "E:\\永乐北藏___乾龙藏\\智能中心-乾隆藏-标注结果"
+        )
+        def testYbZang=new ScriptureConfig(
+                prefix: "YB",
+                textFilesPath: "E:\\永乐北藏___乾龙藏\\永乐北藏\\YB_txt",
+                labelExcelsPath: "E:\\永乐北藏___乾龙藏\\test-yb-标注结果"
+        )
+//        [ybZang,qlZang].each {
+        [qlZang].each {
             def thisScriptureOutputFolder=new File(OutputFolder,it.prefix)
             thisScriptureOutputFolder.mkdirs()
             new File(it.labelExcelsPath).listFiles().findAll {
-                f->f.isFile() && (f.getName().endsWith(".xls") || f.getName().endsWith(".xlsx")) && !f.getName().startsWith("~")
+                f->f.isFile() &&
+                        (f.getName().endsWith(".xls") || f.getName().endsWith(".xlsx")) &&
+                        !f.getName().startsWith("~") &&
+                        !f.getName().contains("未完成")
             }.each {
                 labelExcel->
                     println("Process:${labelExcel.getName()}")
@@ -33,6 +50,8 @@ class InsertCatalog {
                     Sheet sheet=workbook.getSheetAt(0)
 
                     List<File> bookTextFiles = findSortedBookTextFiles(it.textFilesPath,bookNum)
+                    int notFoundCnt=0
+                    boolean warnedNotFinished=false
                     bookTextFiles.each {
                         srcTextFile->
                             println("\tProcess page text file:${srcTextFile.getName()}")
@@ -44,21 +63,42 @@ class InsertCatalog {
 
                             if(labelRows.isEmpty()){
                                 FileCopyUtils.copy(srcTextFile,targetFile)
+                                notFoundCnt++
+                                if(notFoundCnt>=7){
+                                    if(!warnedNotFinished) {
+                                        println("!!!Probably not finished label file: ${labelExcel.getName()}. End PageNum:${pageNum}")
+                                        warnedNotFinished=true
+                                    }
+                                }
                             }else{
+                                notFoundCnt=0
                                 PhotoPageText pageText=readPageText(srcTextFile)
                                 if(labelRows.size()>=2){
-                                    println("\tmultiple labels at same row")
+                                    if(containSameRows(labelRows)) {
+                                        println("\tcontain same label row: ${labelExcel.getName()}")
+                                    }
                                 }
                                 labelRows.each {
                                     labelRow->
                                         insertCatalogTextIntoPageText(labelRow,pageText)
                                 }
+//                                System.exit(0)
                                 writeIntoFile(pageText,targetFile)
                             }
                     }
             }
         }
     }
+
+    static boolean containSameRows(List<PhotoPageLabelRow> labelRows) {
+        for(int i=0;i<labelRows.size()-1;i++){
+            if(labelRows.get(i).isSameAs(labelRows.get(i+1))){
+                return true
+            }
+        }
+        return false
+    }
+
 
     static void writeIntoFile(PhotoPageText photoPageText, File targetFile) {
         targetFile.withWriter("utf-8") {
@@ -138,16 +178,12 @@ class InsertCatalog {
     }
 
     static PhotoPageLabelRow createPhotoPageLabelRowFrom(Row row) {
-        try {
-            return new PhotoPageLabelRow(
-                    page: row.getCell(1).getNumericCellValue().toInteger(),
-                    section: row.getCell(2).getNumericCellValue().toInteger(),
-                    row: row.getCell(3).getNumericCellValue().toInteger(),
-                    text: row.getCell(4).getStringCellValue()
-            )
-        }catch (Exception e){
-            e.printStackTrace()
-        }
+        return new PhotoPageLabelRow(
+                page: row.getCell(1).getNumericCellValue().toInteger(),
+                section: row.getCell(2).getNumericCellValue().toInteger(),
+                row: row.getCell(3).getNumericCellValue().toInteger(),
+                text: row.getCell(4).getStringCellValue()
+        )
     }
 
     static List<File> findSortedBookTextFiles(String textFilesPath, int bookNum) {
