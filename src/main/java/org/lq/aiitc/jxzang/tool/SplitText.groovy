@@ -17,6 +17,7 @@ class SplitText {
     static final String OutputFolder="E:\\嘉兴藏图文整理\\text-slices"
     static final String TextCharset="utf-8"
     static void main(String[]args){
+        new File(OutputFolder).mkdirs()
         doSplit(ExcelFolder,TextFolder,OutputFolder)
     }
 
@@ -25,10 +26,9 @@ class SplitText {
             it-> it.isFile() &&
                     (it.getName().endsWith(".xlsx")||it.getName().endsWith(".xls"))
         }
-//        files=[
-//                new File("E:\\嘉兴藏图文整理\\二次校对结果\\Excel表\\J33nB285.xlsx"),
-//                new File("E:\\嘉兴藏图文整理\\二次校对结果\\Excel表\\J37nB391.xlsx")
-//        ]
+        files=[
+                new File("E:\\嘉兴藏图文整理\\二次校对结果\\Excel表\\J39nB441.xlsx"),
+        ]
         files.each {
             labelExcelFile->
                 println("process Excel File:${labelExcelFile.getName()}")

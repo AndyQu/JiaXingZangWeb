@@ -16,12 +16,12 @@ import org.springframework.web.servlet.ModelAndView
 
 @Controller
 class HomeController {
-//    static final String PhotoRootFolderPath="E:\\嘉兴藏图文整理\\photos"
-//    static final String OutputFolderPath="E:\\嘉兴藏图文整理\\output"
-//    static final String LabelDataFolderPath="E:\\嘉兴藏图文整理\\output-label"
-    static final String PhotoRootFolderPath="/home/xian/jxzang/photos"
-    static final String OutputFolderPath="/home/xian/jxzang/output"
-    static final String LabelDataFolderPath="/home/xian/jxzang/output-label"
+    static final String PhotoRootFolderPath="E:\\嘉兴藏图文整理\\photos"
+    static final String OutputFolderPath="E:\\嘉兴藏图文整理\\output"
+    static final String LabelDataFolderPath="E:\\嘉兴藏图文整理\\output-label"
+//    static final String PhotoRootFolderPath="/home/xian/jxzang/photos"
+//    static final String OutputFolderPath="/home/xian/jxzang/output"
+//    static final String LabelDataFolderPath="/home/xian/jxzang/output-label"
 
     @RequestMapping("/jxz-home")
     ModelAndView hello(ModelAndView mv) {

@@ -6,6 +6,7 @@ import org.apache.poi.ss.usermodel.Row
 import org.apache.poi.ss.usermodel.Sheet
 import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.ss.usermodel.WorkbookFactory
+import org.lq.aiitc.ExcelUtils
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.util.FileCopyUtils
@@ -31,7 +32,7 @@ class InsertCatalog {
                 labelExcelsPath: "E:\\永乐北藏___乾龙藏\\test-yb-标注结果"
         )
 //        [ybZang,qlZang].each {
-        [qlZang].each {
+        [testYbZang].each {
             def thisScriptureOutputFolder=new File(OutputFolder,it.prefix)
             thisScriptureOutputFolder.mkdirs()
             new File(it.labelExcelsPath).listFiles().findAll {
@@ -50,6 +51,9 @@ class InsertCatalog {
                     Sheet sheet=workbook.getSheetAt(0)
 
                     List<File> bookTextFiles = findSortedBookTextFiles(it.textFilesPath,bookNum)
+                    if(bookTextFiles.isEmpty()){
+                        println("\tERROR:没有文本文件")
+                    }
                     int notFoundCnt=0
                     boolean warnedNotFinished=false
                     bookTextFiles.each {
@@ -128,6 +132,10 @@ class InsertCatalog {
     }
 
     static void insertOrAppend(List<String> lines, PhotoPageLabelRow photoPageLabelRow) {
+        if(photoPageLabelRow.row<=0){
+            println("\t\t无效的标注行：${photoPageLabelRow}")
+            return
+        }
         if(lines.size()>photoPageLabelRow.row-1){
             lines.add(photoPageLabelRow.row-1,photoPageLabelRow.text)
         }else {
@@ -159,11 +167,17 @@ class InsertCatalog {
         for(int i=1;i<=sheet.getLastRowNum();i++){
             Row row= sheet.getRow(i)
             if(row!=null){
-                try {
-                    if (row.getCell(1).getNumericCellValue().toInteger() == pageNum) {
-                        labelRows.add(createPhotoPageLabelRowFrom(row))
+                if(row.getCell(1)==null){
+//                    println("无效的行:${ExcelUtils.fetchCells(row,5)}")
+                }else {
+                    try {
+                        if (row.getCell(1).getNumericCellValue().toInteger() == pageNum) {
+                            labelRows.add(createPhotoPageLabelRowFrom(row))
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace()
                     }
-                }catch (Exception e){}
+                }
             }
         }
         labelRows.sort {
