@@ -27,7 +27,8 @@ class SplitText {
                     (it.getName().endsWith(".xlsx")||it.getName().endsWith(".xls"))
         }
         files=[
-                new File("E:\\嘉兴藏图文整理\\二次校对结果\\Excel表\\J39nB441.xlsx"),
+//                new File("E:\\嘉兴藏图文整理\\二次校对结果\\Excel表\\J39nB441.xlsx"),
+                new File("E:\\嘉兴藏图文整理\\二次校对结果\\Excel表\\J20nB096.xlsx"),
         ]
         files.each {
             labelExcelFile->

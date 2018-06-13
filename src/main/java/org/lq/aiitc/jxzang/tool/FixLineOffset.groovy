@@ -1,6 +1,7 @@
 package org.lq.aiitc.jxzang.tool
 
 import com.google.common.collect.Lists
+import org.apache.commons.lang3.StringUtils
 
 /**
  * 嘉兴藏文字切分，出现了连续的错位。用这个程序fix一下
@@ -9,6 +10,91 @@ class FixLineOffset {
     static final OutputFolder="E:\\嘉兴藏-行错位输出"
     static void main(String[]args){
         new File(OutputFolder).mkdirs()
+//        part3()
+//        fix("E:\\嘉兴藏图文整理\\output_除去标点\\text-slices\\正常\\J23nB122",
+//                "JX_267_3",
+//                1,
+//                183,2)
+        part4()
+    }
+    static void part4(){
+        //JX_278_7_131
+        //JX_278_7_145
+        fix("E:\\嘉兴藏图文整理\\output_除去标点\\text-slices\\正常\\J25nB164",
+                "JX_278_7",131,145,4)
+        //JX_286_6_218
+        //JX_286_6_233 E:\嘉兴藏图文整理\output_除去标点\text-slices\正常\J27nB189
+        fix("E:\\嘉兴藏图文整理\\output_除去标点\\text-slices\\正常\\J27nB189",
+                "JX_286_6",218,233,3)
+
+        //JX_287_5_9
+        //JX_287_5_62
+        fix("E:\\嘉兴藏图文整理\\output_除去标点\\text-slices\\正常\\J27nB191",
+                "JX_287_5",9,62,1)
+
+        //JX_288_3_173
+        //JX_288_3_180
+        fix("E:\\嘉兴藏图文整理\\output_除去标点\\text-slices\\正常\\J27nB193",
+                "JX_288_3",173,180,-9)
+
+        //JX_294_2_81
+        //JX_294_2_124
+        fix("E:\\嘉兴藏图文整理\\output_除去标点\\text-slices\\正常\\J28nB212",
+                "JX_294_2",81,124,2)
+        //JX_294_2_125
+        //JX_294_2_161
+        fix("E:\\嘉兴藏图文整理\\output_除去标点\\text-slices\\正常\\J28nB212",
+                "JX_294_2",125,161,2)
+        //JX_294_2_162
+        //JX_294_2_167
+        fix("E:\\嘉兴藏图文整理\\output_除去标点\\text-slices\\正常\\J28nB212",
+                "JX_294_2",162,167,3)
+
+        //JX_329_7_165
+        //JX_329_7_173
+        fix("E:\\嘉兴藏图文整理\\output_除去标点\\text-slices\\正常\\J36nB363",
+                "JX_329_7",165,173,-1)
+
+        //JX_329_9_133
+        //JX_329_9_141
+        fix("E:\\嘉兴藏图文整理\\output_除去标点\\text-slices\\正常\\J36nB367",
+                "JX_329_9",133,141,1)
+
+        //JX_329_9_278
+        //JX_329_9_315
+        fix("E:\\嘉兴藏图文整理\\output_除去标点\\text-slices\\正常\\J36nB368",
+                "JX_329_9",278,315,-1)
+
+        //JX_333_4_106
+        //JX_333_4_159
+        fix("E:\\嘉兴藏图文整理\\output_除去标点\\text-slices\\正常\\J37nB386",
+                "JX_333_4",106,159,-1)
+
+        //JX_345_2_157
+        //JX_345_2_167
+        fix("E:\\嘉兴藏图文整理\\output_除去标点\\text-slices\\正常\\J39nB453",
+                "JX_345_2",157,167,1)
+
+        //JX_373_1_31
+        //JX_373_1_44
+        fix("E:\\嘉兴藏图文整理\\output_除去标点\\text-slices\\正常\\J40nB473",
+                "JX_373_1",31,44,1)
+    }
+    static void part3(){
+        //JX_343_1_2
+        // JX_343_1_43
+        fix("E:\\嘉兴藏图文整理\\output_除去标点\\text-slices\\正常\\J39nB438",
+                "JX_343_1",2,45,-1)
+        //JX_344_6_18
+        //JX_344_6_70
+        fix("E:\\嘉兴藏图文整理\\output_除去标点\\text-slices\\正常\\J39nB450",
+                "JX_344_6",18,70,-2)
+        //JX_344_6_71
+        //JX_344_6_103
+        fix("E:\\嘉兴藏图文整理\\output_除去标点\\text-slices\\正常\\J39nB450",
+                "JX_344_6",71,103,-1)
+    }
+    static void part2(){
         //JX_334_2_98 JX_334_2_173
         fix("E:\\嘉兴藏图文整理\\output_除去标点\\text-slices\\正常\\J37nB392",
                 "JX_334_2",
@@ -24,7 +110,7 @@ class FixLineOffset {
         //JX_334_4_2  JX_334_4_88
         fix("E:\\嘉兴藏图文整理\\output_除去标点\\text-slices\\正常\\J37nB392",
                 "JX_334_4",
-        2,88,
+                2,88,
                 1)
 
         //JX_334_9_146 JX_334_9_184
@@ -34,7 +120,7 @@ class FixLineOffset {
                 1)
         //JX_344_9_65 JX_344_9_176
         fix("E:\\嘉兴藏图文整理\\output_除去标点\\text-slices\\正常\\J39nB452",
-        "JX_344_9",65,176,1)
+                "JX_344_9",65,176,1)
 
         //JX_344_9_194 JX_344_9_225
         fix("E:\\嘉兴藏图文整理\\output_除去标点\\text-slices\\正常\\J39nB452",
@@ -158,7 +244,7 @@ class FixLineOffset {
                 println(fromFile+":${lines.size()},${offset}")
                 lastLines.addAll(lines.subList(lines.size()-offset,lines.size()))
                 lines.addAll(0,previousLines)
-                lines.subList(0,lines.size()-1).each {
+                lines.findAll{it->!StringUtils.isBlank(it)}.subList(0,lines.size()-offset).each {
                     writer.write(it)
                     writer.write("\n")
                 }
@@ -183,7 +269,7 @@ class FixLineOffset {
         new File("${OutputFolder}\\${photoPrefix}_${startNum}.txt").withWriter("UTF-8"){
             writer->
                 def lines=new File("${textSliceFolder}\\${photoPrefix}_${startNum}.txt").readLines("UTF-8")
-                lines.subList(0,lines.size()-offset).each {
+                lines.findAll{it->!StringUtils.isBlank(it)}.subList(0,lines.size()-offset).each {
                     writer.write(it)
                     writer.write("\n")
                 }

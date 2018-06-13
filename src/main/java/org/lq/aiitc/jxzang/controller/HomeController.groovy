@@ -7,6 +7,7 @@ import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.ss.usermodel.WorkbookFactory
 import org.lq.aiitc.jxzang.AutoInsertPhotoNameIntoText
 import org.lq.aiitc.jxzang.LabelRow
+import org.lq.aiitc.jxzang.tool.RmPunctuation
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -79,7 +80,8 @@ class HomeController {
                         String lineA=scanner.nextLine()
                         String lineB=rmBomChar(lineA)
 //                        String lingB=lineA.replaceAll("\ufeff﻿","")
-                        String line=lineB.trim()
+                        //去除标点符号
+                        String line=RmPunctuation.rmPunctuation(lineB.trim())
                         if(StringUtils.isBlank(line)){
                             sb.append("${line}\n")
                             writer<<"${line}\n"
